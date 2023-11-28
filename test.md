@@ -1,60 +1,28 @@
-# pytorch-AdaIN
+apt-get update
+pip install -r requirements.txt
 
-This is an unofficial pytorch implementation of a paper, Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization [Huang+, ICCV2017].
-I'm really grateful to the [original implementation](https://github.com/xunhuang1995/AdaIN-style) in Torch by the authors, which is very useful.
+apt-get install -y libgl1-mesa-glx
+#https://velog.io/@zxxzx1515/%EC%98%A4%EB%A5%98-%EB%85%B8%ED%8A%B8-libGL.so.1-cannot-open-shared-object-file-No-such-file-or-directory
 
-![Results](results.png)
+apt-get install -y libglib2.0-0
+apt-get install -y libgtk2.0-dev
+#https://askubuntu.com/questions/1060903/importerror-libgthread-2-0-so-0-cannot-open-shared-object-file-no-such-file-o
+#need to long time
 
-## Requirements
-Please install requirements by `pip install -r requirements.txt`
+pip install imageio-ffmpeg
 
-- Python 3.5+
-- PyTorch 0.4+
-- TorchVision
-- Pillow
+cd /root/pytorch-AdaIN/
 
-(optional, for training)
-- tqdm
-- TensorboardX
+#image
+python test.py --content input/content/cornell.jpg --style input/style/woman_with_hat_matisse.jpg
 
-## Usage
-
-### Download models
-Download [decoder.pth](https://drive.google.com/file/d/1bMfhMMwPeXnYSQI6cDWElSZxOxc6aVyr/view?usp=sharing)/[vgg_normalized.pth](https://drive.google.com/file/d/1EpkBA2K2eYILDSyPTt0fztz59UjAIpZU/view?usp=sharing) and put them under `models/`.
-
-### Test
-Use `--content` and `--style` to provide the respective path to the content and style image.
-```
-CUDA_VISIBLE_DEVICES=<gpu_id> python test.py --content input/content/cornell.jpg --style input/style/woman_with_hat_matisse.jpg
-```
-
-You can also run the code on directories of content and style images using `--content_dir` and `--style_dir`. It will save every possible combination of content and styles to the output directory.
-```
-CUDA_VISIBLE_DEVICES=<gpu_id> python test.py --content_dir input/content --style_dir input/style
-```
-
-This is an example of mixing four styles by specifying `--style` and `--style_interpolation_weights` option.
-```
-CUDA_VISIBLE_DEVICES=<gpu_id> python test.py --content input/content/avril.jpg --style input/style/picasso_self_portrait.jpg,input/style/impronte_d_artista.jpg,input/style/trial.jpg,input/style/antimonocromatismo.jpg --style_interpolation_weights 1,1,1,1 --content_size 512 --style_size 512 --crop
-```
-
-Some other options:
-* `--content_size`: New (minimum) size for the content image. Keeping the original size if set to 0.
-* `--style_size`: New (minimum) size for the content image. Keeping the original size if set to 0.
-* `--alpha`: Adjust the degree of stylization. It should be a value between 0.0 and 1.0 (default).
-* `--preserve_color`: Preserve the color of the content image.
+#video
+python test_video.py --content_video input/videos/cutBunny.mp4 --style_path input/style/woman_with_hat_matisse.jpg
 
 
-### Train
-Use `--content_dir` and `--style_dir` to provide the respective directory to the content and style images.
-```
-CUDA_VISIBLE_DEVICES=<gpu_id> python train.py --content_dir <content_dir> --style_dir <style_dir>
-```
+#decoder.pth
+https://drive.google.com/file/d/1bMfhMMwPeXnYSQI6cDWElSZxOxc6aVyr/view
+https://drive.google.com/file/d/1EpkBA2K2eYILDSyPTt0fztz59UjAIpZU/view
 
-For more details and parameters, please refer to --help option.
-
-I share the model trained by this code [here](https://drive.google.com/file/d/1YIBRdgGBoVllLhmz_N7PwfeP5V9Vz2Nr/view?usp=sharing)
-
-## References
-- [1]: X. Huang and S. Belongie. "Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization.", in ICCV, 2017.
-- [2]: [Original implementation in Torch](https://github.com/xunhuang1995/AdaIN-style)
+wget -no-check-certificate 'https://docs.google.com/uc?export=download&id=1bMfhMMwPeXnYSQI6cDWElSZxOxc6aVyr' -O decoder.pthvgg_normalised.pth
+vgg_normalised.pth
