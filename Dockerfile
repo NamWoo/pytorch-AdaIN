@@ -6,7 +6,8 @@ LABEL maintainer="pre3ice@gmail.com"
 RUN apt-get -y update
 #COPY docker/requirements.txt /src/requirements.txt
 
-RUN pip install -r /src/requirements.txt
+WORKDIR /root/pytorch-AdaIN
+RUN pip install -r requirements.txt
 
 # COPY *.py /src/
 # RUN echo "#! $(which python)" | cat - /src/train.py > /src/train.tmp.py
@@ -23,16 +24,16 @@ RUN pip install -r /src/requirements.txt
 # ENV XDG_CACHE_HOME=/workspace/.cache
 
 WORKDIR /root
-RUN git clone https://github.com/NamWoo/pytorch-AdaIN.git
+# RUN git clone https://github.com/NamWoo/pytorch-AdaIN.git
 ENV PYTHONPATH "${PYTONPATH}:/root/pytorch-AdaIN"
-WORKDIR /root/pytorch-AdaIN/models
-RUN pip install -r requirements.txt
+# RUN pip install -r requirements.txt
 RUN apt-get install -y libgl1-mesa-glx libglib2.0-0 libgtk2.0-dev
 
+WORKDIR /root/pytorch-AdaIN/models
 RUN apt-get install -y wget
 RUN wget -no-check-certificate 'https://docs.google.com/uc?export=download&id=1bMfhMMwPeXnYSQI6cDWElSZxOxc6aVyr' -O decoder.pth
 RUN wget -no-check-certificate 'https://docs.google.com/uc?export=download&id=1EpkBA2K2eYILDSyPTt0fztz59UjAIpZU' -O vgg_normalised.pth
-
+#https://han-lim.github.io/debug/Error2/
 WORKDIR /root/pytorch-AdaIN
 # RUN pip install imageio-ffmpeg
 
